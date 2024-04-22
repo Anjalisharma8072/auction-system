@@ -3,32 +3,35 @@ import express from "express";
 import pg from "pg";
 import multer from "multer";
 import path from "path";
+import { fileURLToPath } from 'url';
 
 const app = express();
 
-app.use(express.static('public'));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname + '/public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const storage = multer.diskStorage({
-    destination:function(req,file,cb){
-        return cb(null,"./uploads");
+    destination: function (req, file, cb) {
+        return cb(null, "./uploads");
     },
-    filename:function(req,file,cb){
-        return cb(null,`${Date.now()}-${file.originalname}`);
+    filename: function (req, file, cb) {
+        return cb(null, `${Date.now()}-${file.originalname}`);
     },
 });
 
-const upload = multer({storage})
+const upload = multer({ storage })
 
-// const db = new pg.Client({
-//     user: "postgres",
-//     host: "localhost",
-//     database: "auction system",
-//     password: "5432",
-//     port: 5432,
-// })
+const db = new pg.Client({
+    user: "postgres",
+    host: "localhost",
+    database: "auction system",
+    password: "5432",
+    port: 5432,
+})
 
-// db.connect()
+db.connect()
 
 app.set('view engine', 'ejs');
 
@@ -85,7 +88,7 @@ app.post("/login", async (req, res) => {
     }
 })
 
-app.get('/bid',(req,res)=>{
+app.get('/bid', (req, res) => {
     res.render("pages/bid")
 })
 app.get('/buy', async (req, res) => {
@@ -104,18 +107,18 @@ app.post('/buy', async (req, res) => {
     const product_desc = req.body.Description;
     const product_price = req.body.price;
     const product_date = req.body.date;
-    const  product_time = req.body.bidtime;
-    const valid_date= req.body.validdate;
+    const product_time = req.body.bidtime;
+    const valid_date = req.body.validdate;
     const product_category = req.body.product_category;
-    const product_image =req.file;
-    console.log("----",product_category)
-    console.log("time",product_time)
+    const product_image = req.file;
+    console.log("----", product_category)
+    console.log("time", product_time)
     try {
-      
-        await db.query("INSERT INTO biditem(product_name, product_price,product_description,product_time,publish_date,valid_date,product_category) VALUES ($1,$2,$3,$4,$5,$6,$7)", [product_name, product_price,product_desc,product_time,product_date,valid_date,product_category]);
+
+        await db.query("INSERT INTO biditem(product_name, product_price,product_description,product_time,publish_date,valid_date,product_category) VALUES ($1,$2,$3,$4,$5,$6,$7)", [product_name, product_price, product_desc, product_time, product_date, valid_date, product_category]);
         console.log('Bid item inserted successfully');
-        
-        
+
+
         res.redirect('/buy');
     } catch (error) {
         console.error('Error inserting biditem data', error);
@@ -124,18 +127,17 @@ app.post('/buy', async (req, res) => {
 
 });
 
-app.get('/description/:product_id',async(req,res)=>{
+app.get('/description/:product_id', async (req, res) => {
     try {
         const id = req.params.product_id;
         console.log(id)
         const biditem = await db.query(`SELECT * FROM  biditem WHERE product_id = ${id}`);
-       
         res.render('pages/description', { biditem: biditem.rows }); // Pass biditem to the template
     } catch (error) {
         console.error('Error fetching biditem data', error);
         res.status(500).send('Internal Server Error');
     }
-   
+
 })
 
 
