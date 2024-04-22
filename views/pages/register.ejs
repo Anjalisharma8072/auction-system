@@ -1,0 +1,23 @@
+<%- include ('home.ejs') %>
+<div id="login">
+    <form action="/Register" method="POST">
+      <div class="mb-3">
+        <input type="email" placeholder="Email address" class="form-control" id="exampleInputEmail1"
+          aria-describedby="emailHelp" name="email">
+
+      </div>
+      <br>
+
+
+      <div class="mb-3">
+        <input type="password" placeholder="Set password" name="password" class="form-control" id="exampleInputPassword1">
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary">Register</button>
+      <a href="/login">login</a>
+    </form>
+  </div>
