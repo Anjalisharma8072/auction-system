@@ -1,34 +1,34 @@
 import bodyParser from "body-parser";
 import express from "express";
 import pg from "pg";
-// import multer from "multer";
-// import path from "path";
+import multer from "multer";
+import path from "path";
 
 const app = express();
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// const storage = multer.diskStorage({
-//     destination:function(req,file,cb){
-//         return cb(null,"./uploads");
-//     },
-//     filename:function(req,file,cb){
-//         return cb(null,`${Date.now()}-${file.originalname}`);
-//     },
-// });
+const storage = multer.diskStorage({
+    destination:function(req,file,cb){
+        return cb(null,"./uploads");
+    },
+    filename:function(req,file,cb){
+        return cb(null,`${Date.now()}-${file.originalname}`);
+    },
+});
 
-// const upload = multer({storage})
+const upload = multer({storage})
 
-const db = new pg.Client({
-    user: "postgres",
-    host: "localhost",
-    database: "auction system",
-    password: "5432",
-    port: 5432,
-})
+// const db = new pg.Client({
+//     user: "postgres",
+//     host: "localhost",
+//     database: "auction system",
+//     password: "5432",
+//     port: 5432,
+// })
 
-db.connect()
+// db.connect()
 
 app.set('view engine', 'ejs');
 
@@ -40,11 +40,11 @@ app.get("/login", (req, res) => {
     res.render("pages/login")
 })
 
-app.get("/Register", (req, res) => {
-    res.render("E:\\anjali\\online auction system\\public\\register.ejs")
+app.get("/register", (req, res) => {
+    res.render("pages/register")
 })
 
-app.post("/Register", async (req, res) => {
+app.post("/register", async (req, res) => {
     const email = req.body.email;
     const Password = req.body.password;
     try {
@@ -57,7 +57,7 @@ app.post("/Register", async (req, res) => {
                 "INSERT INTO register(email_id,password) VALUES ($1,$2)",
                 [email, Password]
             );
-            res.render("E:\\anjali\\online auction system\\public\\register.ejs")
+            res.render("paegs/register")
         }
     } catch (err) {
         console.log(err);
@@ -86,13 +86,13 @@ app.post("/login", async (req, res) => {
 })
 
 app.get('/bid',(req,res)=>{
-    res.render("E:\\anjali\\online auction system\\public\\bid.ejs")
+    res.render("pages/bid")
 })
 app.get('/buy', async (req, res) => {
     try {
 
         const biditem = await db.query("SELECT * FROM biditem");
-        res.render('E:\\anjali\\online auction system\\public\\buy.ejs', { biditem: biditem.rows }); // Pass biditem to the template
+        res.render('pages/buy', { biditem: biditem.rows }); // Pass biditem to the template
     } catch (error) {
         console.error('Error fetching biditem data', error);
         res.status(500).send('Internal Server Error');
@@ -108,20 +108,8 @@ app.post('/buy', async (req, res) => {
     const valid_date= req.body.validdate;
     const product_category = req.body.product_category;
     const product_image =req.file;
-    
-    
-      
     console.log("----",product_category)
-    
     console.log("time",product_time)
-    
-     
-    
-       
-    
-    
-    
-
     try {
       
         await db.query("INSERT INTO biditem(product_name, product_price,product_description,product_time,publish_date,valid_date,product_category) VALUES ($1,$2,$3,$4,$5,$6,$7)", [product_name, product_price,product_desc,product_time,product_date,valid_date,product_category]);

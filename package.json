@@ -5,7 +5,8 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "d3ev": "node main"
+    "dev": "nodemon main",
+    "start": "node main"
   },
   "keywords": [],
   "author": "Anjali Sharma",
