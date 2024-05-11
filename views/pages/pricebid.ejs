@@ -1,0 +1,48 @@
+<%- include ('navbar')%>
+
+
+    <div class="usersbid">
+        <table class="price table">
+            <tr class="head">
+                <th class="content">Name</th>
+                <th>Email</th>
+                <th>Price</th>
+            </tr>
+            <tr>
+                <% bidshow.forEach(user=>{ %>
+                    <td>
+                        <%= user.user_name %>
+                    </td>
+                    <td>
+                        <%= user.email %>
+                    </td>
+                    <td>
+                        <%= user.price %>
+                    </td>
+            </tr>
+
+            <% }) %>
+
+        </table>
+    </div>
+    <br>
+    <h1 id="winner-name">
+
+       Congratulations!  <%= winner %> 🎉
+    </h1>
+
+    <div class="purchase" class="purchase">
+
+        <form action="/purchase" method="post">
+            <input id="name" name="name" class="form-control" placeholder="Enter Your Name" required>
+            <br>
+            <input type="email" placeholder="Email address" name="email" class="form-control" id="exampleInputEmail1"
+                aria-describedby="emailHelp" required>
+            <br>
+            <input id="price" type="number" class="form-control" name="price" placeholder="Enter Your Price" required>
+            <br>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal">ADD</button>
+        </form>
+    </div>
+
+    

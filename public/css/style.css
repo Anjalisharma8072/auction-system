@@ -85,21 +85,77 @@ img{
 }
 
 
-.card{
+/* .card{
   display: grid;
   grid-template-columns: repeat(4, 1fr); 
   gap: 20px;
+} */
+.card{
+  height: 400px;
+  width: 300px;
+  /* display: grid; */
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px;
+  
 }
 
-.card-body{
-  height: 500px;
+/* .card-body{
+  height: 200px;
+} */
+ .card-body{
+  height: 350px;
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px;
   border: 1px solid #ccc;
-}
+}  
 
 .detail-heading{
   background-color: #4B6DC5;
+}
+
+#model-button{
+  align-items: center;
+  background-color: beige;
+}
+.purchase{
+  background-color:chocolate;
+  width: 300px;
+  padding: 30px;
+  border-radius: 10px;
+  margin:90px 0px 0px 35%;
+  
+}
+
+.price {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.price th, .price td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.price .head th {
+    background-color: #f2f2f2;
+}
+
+.price .head th, .price .head td {
+    font-weight: bold;
+}
+
+.price tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* CSS for styling the winner's name */
+#winner-name {
+    font-size: 24px; /* Adjust the font size as needed */
+    color:  #4CAF50; /* Color of the text */
+    text-align: center; /* Align the text to the center */
+    margin-top: 20px; /* Add some margin at the top */
+    
 }

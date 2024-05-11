@@ -1,45 +1,107 @@
-// function countdownTimer(maxTime) {
-//   // Parse the maximum time string into hours, minutes, and seconds
-//   var parts = maxTime.split(":");
-//   var maxHours = parseInt(parts[0]);
-//   var maxMinutes = parseInt(parts[1]);
-//   var maxSeconds = parseInt(parts[2]) || 0;
+<% biditem.forEach(user=>{ %>
 
-//   // Get the current time
-//   var currentTime = new Date();
-//   var currentHours = currentTime.getHours();
-//   var currentMinutes = currentTime.getMinutes();
-//   var currentSeconds = currentTime.getSeconds();
+    <div class="card" style="width: 300px; height: 300px; display: inline-flex ;justify-content: space-between;">
+      <img src="<%= user.images %>" class="card-img-top" alt="imagess"  style="height: 200px;"/>
 
-//   // Convert both current and maximum times into total seconds
-//   var maxTotalSeconds = maxHours * 3600 + maxMinutes * 60 + maxSeconds;
-//   var currentTotalSeconds = currentHours * 3600 + currentMinutes * 60 + currentSeconds;
+      <div class="card-body">
+        <h5 class="card-title">
+          <%= user.product_name %>
+        </h5>
+        <p class="card-title" style="color: grey;">
+          <%= user.product_description.substring(0,50) %>...
+        </p>
+        <p class="card-text">₹<%= user.product_price %>
+        </p>
+        <p class="card-text" id="seconds_<%= user.product_id %>"></p>
+        <script>
+          function countdownTimer(maxTime) {
+            // Parse the maximum time string into hours, minutes, and seconds
+            var parts = maxTime.split(":");
+            var maxHours = parseInt(parts[0]);
+            var maxMinutes = parseInt(parts[1]);
+            var maxSeconds = parseInt(parts[2]) || 0;
 
-//   var timer = setInterval(function() {
-//       // Get the updated current time
-//       currentTime = new Date();
-//       currentHours = currentTime.getHours();
-//       currentMinutes = currentTime.getMinutes();
-//       currentSeconds = currentTime.getSeconds();
-//       currentTotalSeconds = currentHours * 3600 + currentMinutes * 60 + currentSeconds;
+            // Get the current time
+            var currentTime = new Date("<%=user.valid_date%>");
+            var currentHours = currentTime.getHours();
+            var currentMinutes = currentTime.getMinutes();
+            var currentSeconds = currentTime.getSeconds();
 
-//       // Check if current time has reached or exceeded the maximum time
-//       if (currentTotalSeconds >= maxTotalSeconds) {
-//           clearInterval(timer);
-//           console.log("Time's up!");
-//           return;
-//       }
+            // Convert both current and maximum times into total seconds
+            var maxTotalSeconds = maxHours * 3600 + maxMinutes * 60 + maxSeconds;
+            var currentTotalSeconds =
+              currentHours * 3600 + currentMinutes * 60 + currentSeconds;
 
-//       // Calculate remaining time
-//       var remainingTotalSeconds = maxTotalSeconds - currentTotalSeconds;
-//       var remainingHours = Math.floor(remainingTotalSeconds / 3600);
-//       var remainingMinutes = Math.floor((remainingTotalSeconds % 3600) / 60);
-//       var remainingSeconds = remainingTotalSeconds % 60;
-//       document.getElementById("seconds").value=remainingSeconds;
-//       console.log("Time remaining: " + remainingHours + " hours " + remainingMinutes + " minutes " + remainingSeconds + " seconds");
-//   }, 1000);
-// }
+            var timer = setInterval(function () {
+              // Get the updated current time
+              currentTime = new Date();
+              currentHours = currentTime.getHours();
+              currentMinutes = currentTime.getMinutes();
+              currentSeconds = currentTime.getSeconds();
+              currentTotalSeconds =
+                currentHours * 3600 + currentMinutes * 60 + currentSeconds;
 
-// countdownTimer('9:38')
+              // Check if current time has reached or exceeded the maximum time
+              if (currentTotalSeconds >= maxTotalSeconds) {
+                clearInterval(timer);
+                over = "Time's up!";
+                document.getElementById("seconds_<%= user.product_id %>").textContent = over;
+                return;
+              }
 
-console.log(new Date())
+              // Calculate remaining time
+              var remainingTotalSeconds = maxTotalSeconds - currentTotalSeconds;
+              var remainingHours = Math.floor(remainingTotalSeconds / 3600);
+              var remainingMinutes = Math.floor(
+                (remainingTotalSeconds % 3600) / 60
+              );
+              var remainingSeconds = remainingTotalSeconds % 60;
+              var time =
+                remainingHours + ":" + remainingMinutes + ":" + remainingSeconds;
+
+              document.getElementById("seconds_<%= user.product_id %>").textContent = time;
+            }, 1000);
+          }
+
+          countdownTimer("<%= user.product_time %>");
+        </script>
+
+        <a href="/description/<%= user.product_id %>" class="btn btn-primary">bid</a>
+      </div>
+    </div>
+    <% }) %>
+
+
+
+
+
+
+     <!-- <div class="purchase">
+
+                    <form action="/description/<%= user.product_id %>" method="post">
+                        <input id="name" name="name" class="form-control" placeholder="Enter Your Name" required>
+                        <input type="email" placeholder="Email address" name="email" class="form-control"
+                            id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                        <input id="price" type="number" class="form-control" name="price" placeholder="Enter Your Price"
+                            required>
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </form>
+                </div>
+
+                <% }) %>
+        </div>
+        <% bidshow.forEach(user=> {%>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Bid-Price</th>
+
+                </tr>
+                <tr>
+                    <td>{{ user.user_name}}</td>
+                    <td>{{ user.price}}</td>
+
+                </tr>
+
+            </table>
+            <% }) %> --></form>

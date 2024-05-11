@@ -1,7 +1,7 @@
 <%- include ('navbar') %>
     <h1 class="heading">Start Your Bidding Journey</h1>
     <div id="bid">
-        <form action="/buy" method="post">
+        <form action="/buy" method="post" enctype="multipart/form-data">
             <label for="name">Enter Product Name*</label>
             <input id="productName" name="name" class="form-control" required>
             <br>
